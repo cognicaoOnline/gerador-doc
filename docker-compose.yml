@@ -1,12 +1,7 @@
 version: "3.7"
 services:
   gerador-ren-app:
-    # Como não temos um registry de imagens privado configurado no seu ambiente, 
-    # faremos o build diretamente pelo Portainer a partir do diretório.
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: gerador-ren-app:latest
+    image: ghcr.io/cognicaoonline/gerador-doc:latest
     
     networks:
       - connect-stock
