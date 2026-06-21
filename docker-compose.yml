@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  gerador-ren-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: gerador-ren-web:latest
+    container_name: gerador-ren-web
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
+      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
+    # networks:
+    #   - web
+    # Uncomment and configure networks if using a reverse proxy like Traefik in Portainer
+
+# networks:
+#   web:
+#     external: true
