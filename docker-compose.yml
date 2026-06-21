@@ -1,7 +1,7 @@
 version: "3.7"
 services:
   gerador-ren-app:
-    image: ghcr.io/cognicaoonline/gerador-doc:v1.0.0
+    image: cognicaoonline/gerador-doc:v1.0.0
     
     networks:
       - connect-stock
