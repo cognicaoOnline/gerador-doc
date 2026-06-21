@@ -1,22 +1,31 @@
-version: '3.8'
-
+version: "3.7"
 services:
-  gerador-ren-web:
+  gerador-ren-app:
+    # Como não temos um registry de imagens privado configurado no seu ambiente, 
+    # faremos o build diretamente pelo Portainer a partir do diretório.
     build:
       context: .
       dockerfile: Dockerfile
-    image: gerador-ren-web:latest
-    container_name: gerador-ren-web
-    restart: unless-stopped
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY}
-    # networks:
-    #   - web
-    # Uncomment and configure networks if using a reverse proxy like Traefik in Portainer
+    image: gerador-ren-app:latest
+    
+    networks:
+      - connect-stock
 
-# networks:
-#   web:
-#     external: true
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+      labels:
+        - traefik.enable=true
+        - traefik.http.routers.gerador_ren.rule=Host(`gerador-doc.cognicao.online`)
+        - traefik.http.routers.gerador_ren.entrypoints=websecure
+        - traefik.http.routers.gerador_ren.tls=true
+        - traefik.http.routers.gerador_ren.service=gerador_ren
+        - traefik.http.routers.gerador_ren.tls.certresolver=letsencryptresolver
+        - traefik.http.services.gerador_ren.loadbalancer.server.port=3000
+
+networks:
+  connect-stock:
+    external: true
+    attachable: true
+    name: connect-stock
